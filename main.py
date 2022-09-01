@@ -1,4 +1,11 @@
+
+
+#FastAPI
 from fastapi import FastAPI
+
+#From modules
+from models.users import User, UserIn, UserOut
+
 
 
 
