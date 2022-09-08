@@ -32,3 +32,6 @@ class User(UserBase):
         max_length=50
     )
     birth_date: Optional[date] = Field(default=None)
+
+class UserRegister(User, UserLogin):  # Heredamos de User y PasswordMixin
+    pass

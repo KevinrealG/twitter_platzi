@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi import status
 
 #From modules
-from models.users import User
+from models.users import User, UserRegister
 from models.tweet import Tweet
 
 
@@ -31,6 +31,23 @@ app = FastAPI()
 
     )
 def signup():
+    """
+    Register a new user
+    This path is used to register a new user in the system.
+
+    parameters:
+        - user: UserRegister
+
+    responses:
+        201: return a JSON with the basic user data:
+        -   user_id: UUID
+        -  email: EmailStr
+        -  first_name: str
+        -  last_name: str
+        -  birth_date: Optional[date]
+        400: Bad Request
+    """
+    
     pass 
 ### Login User
 @app.post(
