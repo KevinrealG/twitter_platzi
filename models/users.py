@@ -33,5 +33,20 @@ class User(UserBase):
     )
     birth_date: Optional[date] = Field(default=None)
 
-class UserRegister(User, UserLogin):  # Heredamos de User y PasswordMixin
-    pass
+class UserRegister(User):  # Heredamos de User y PasswordMixin
+    password: str = Field(
+        ...,
+        min_length=8,
+        max_length=128,
+    )
+    class Config:
+        schema_extra = {
+            "example": {
+                "user_id": "f4a4c3b0-5b6c-4b4a-9c1c-1c1c1c1c1c1c",
+                "email": "k12233ml@gmail.com",
+                "password": "12345678",
+                "first_name": "Kev",
+                "last_name": "M",
+                "birth_date": "1995-01-01"
+            }
+        }

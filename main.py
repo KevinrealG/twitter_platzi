@@ -1,15 +1,23 @@
-#Python
+
+# Python
+import json
+from uuid import UUID
+from datetime import date
+from datetime import datetime
 from typing import Optional, List
 
-#FastAPI
+# Pydantic
+from pydantic import BaseModel
+from pydantic import EmailStr
+from pydantic import Field
+
+# FastAPI
 from fastapi import FastAPI
 from fastapi import status
-
+from fastapi import Body
 #From modules
-from models.users import User, UserRegister
+from models.users import UserRegister, User 
 from models.tweet import Tweet
-
-
 
 
 app = FastAPI()
@@ -30,7 +38,7 @@ app = FastAPI()
     tags=["Users"]
 
     )
-def signup():
+def signup(user: UserRegister = Body(...)):
     """
     Register a new user
     This path is used to register a new user in the system.
@@ -48,7 +56,15 @@ def signup():
         400: Bad Request
     """
     
-    pass 
+    with open("users.json", "r+", encoding="utf-8") as f: 
+        results = json.loads(f.read()) #Read the file, convert to JSON
+        user_dict = user.dict()
+        user_dict["user_id"] = str(user_dict["user_id"])
+        user_dict["birth_date"] = str(user_dict["birth_date"])
+        results.append(user_dict) #Agregamos el nuevo usuario a la lista
+        f.seek(0)# rewind to the beginning of the file
+        f.write(json.dumps(results))# write the new data, converts dumps() the list of dictionarie  to JSON
+        return user 
 ### Login User
 @app.post(
     path="/login",
@@ -123,7 +139,7 @@ def home():
 @app.post(
     path="/post",
     response_model=Tweet,
-    status_code=status.HTTP_201_OK,
+    status_code=status.HTTP_201_CREATED,
     summary="Post a tweet",
     tags=["Tweets"]
     )
