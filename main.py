@@ -1,14 +1,10 @@
 
 # Python
 import json
-from uuid import UUID
-from datetime import date
-from datetime import datetime
 from typing import Optional, List
 
 # Pydantic
-from pydantic import BaseModel
-from pydantic import EmailStr
+
 from pydantic import Field
 
 # FastAPI
@@ -48,11 +44,11 @@ def signup(user: UserRegister = Body(...)):
 
     responses:
         201: return a JSON with the basic user data:
-        -   user_id: UUID
-        -  email: EmailStr
-        -  first_name: str
-        -  last_name: str
-        -  birth_date: Optional[date]
+                -   user_id: UUID
+                -  email: EmailStr
+                -  first_name: str
+                -  last_name: str
+                -  birth_date: Optional[date]
         400: Bad Request
     """
     
@@ -86,7 +82,20 @@ def login():
 
     )
 def show_all_users():
-    pass 
+    """
+        This Path is used to show all users in the system
+        Parameters:
+            - None
+        Returns a JSON list with all users, with the following keys   
+                    -   user_id: UUID
+                -  email: EmailStr
+                -  first_name: str
+                -  last_name: str
+                -  birth_date: Optional[date]
+    """
+    with open("users.json", "r", encoding="utf-8") as f: 
+        results = json.loads(f.read())
+        return results
 
 ### Get a user
 @app.get(
