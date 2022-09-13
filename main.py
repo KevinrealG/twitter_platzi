@@ -152,8 +152,44 @@ def home():
     summary="Post a tweet",
     tags=["Tweets"]
     )
-def post():
-    pass
+def post(tweet: Tweet = Body(...)):
+    """
+    Post a tweet
+    This path is used to post a tweet in the system.
+
+
+    parameters:
+        Reuest Body:
+        - tweer: Tweet
+        
+
+    Returns a JSON with the basic tweet data:
+                -   tweet_id: UUID
+
+                -  user_id: UUID
+
+                -  tweet: str
+
+                -  created_at: datetime
+
+                -  updated_at: Optional[datetime]
+
+                - by: User
+        
+    """
+    with open("tweets.json", "r+", encoding="utf-8") as f: 
+        results = json.loads(f.read())
+        tweet_dict = tweet.dict()
+        tweet_dict["tweet_id"] = str(tweet_dict["tweet_id"])
+        tweet_dict["created_at"] = str(tweet_dict["created_at"])
+        tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
+        tweet_dict["by"]["user_id"] = str(tweet_dict["by"]["user_id"])
+        tweet_dict["by"]["birth_date"] = str(tweet_dict["by"]["birth_date"])
+        
+        results.append(tweet_dict ) #Agregamos el nuevo usuario a la lista
+        f.seek(0)# rewind to the beginning of the file
+        f.write(json.dumps(results))# write the new data, converts dumps() the list of dictionarie  to JSON
+        return tweet
 
 ### show a tweet
 @app.get(
