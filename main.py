@@ -142,7 +142,32 @@ def delete_a_user():
     tags=["Tweets"]
     )
 def home():
-    return {"Twitter Api": "Working"}
+    """
+    This path is used to show all tweets in the system
+
+    
+    parameters:
+        - None
+
+
+    Returns a JSON list with all tweets, with the following keys:
+        
+        - tweet_id: UUID
+
+        - user_id: UUID
+
+        - tweet: str
+
+        - created_at: datetime
+
+        - updated_at: Optional[datetime]
+
+        - by_user: User
+    """
+    with open("tweets.json", "r", encoding="utf-8") as f:
+        results = json.loads(f.read())
+        return results
+    
 
 ### Post a tweet
 @app.post(
@@ -200,6 +225,8 @@ def post(tweet: Tweet = Body(...)):
     tags=["Tweets"]
 )
 def show_a_tweet():
+    """
+    """
     pass
 
 ### Delete a tweet
